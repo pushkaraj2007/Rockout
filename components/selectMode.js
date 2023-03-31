@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 const SelectMode = () => {
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-br from-yellow-400 to-red-500">
-      <div className="flex flex-col items-center justify-center rounded-lg shadow-lg bg-white p-8 mx-4 transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+    <div className="flex flex-wrap justify-center items-center h-screen bg-gradient-to-br from-yellow-400 to-red-500">
+      <div className="flex flex-col items-center justify-center rounded-lg shadow-lg bg-white p-8 mx-4 transform hover:-translate-y-2 transition-all duration-300 ease-in-out mt-28">
         <h2 className="text-3xl font-bold mb-4">SinglePlayer</h2>
         <p className="text-lg text-center mb-6">
           Play against the computer and test your luck! <br />
@@ -17,7 +17,7 @@ const SelectMode = () => {
         </Link>
       </div>
 
-      <div className="flex flex-col items-center justify-center rounded-lg shadow-lg bg-white p-8 mx-4 transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+      <div className="flex flex-col items-center justify-center rounded-lg shadow-lg bg-white p-8 mx-4 transform hover:-translate-y-2 transition-all duration-300 ease-in-out mt-0">
         <h2 className="text-3xl font-bold mb-4">MultiPlayer</h2>
         <p className="text-lg text-center mb-6">
           Play against real players across the world and fight for the win! <br />
