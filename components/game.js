@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2'
 
 const CHOICES = ['rock', 'paper', 'scissors'];
 
@@ -8,11 +9,25 @@ const Game = () => {
   const [userScore, setUserScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
   const [round, setRound] = useState(1);
+  const [totalRounds, setTotalRounds] = useState(5)
   const [winner, setWinner] = useState(null);
 
+  useEffect(() => {
+    Swal.fire({
+      input: 'number',
+      inputLabel: 'Total number of rounds',
+      inputPlaceholder: 'Enter the number of rounds you want to play',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setTotalRounds(result.value)
+      }
+    })
+
+
+  }, [])
 
   useEffect(() => {
-    if (round >= 5) {
+    if (round >= totalRounds) {
       let finalResultDiv = document.getElementById('finalResultDiv')
       let finalResulText = document.getElementById('finalResultText')
       let container = document.getElementById('container')
