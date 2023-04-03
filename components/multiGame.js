@@ -6,6 +6,10 @@ const multiGame = () => {
 
     const [playerChoice, setPlayerChoice] = useState(null)
     const [opponentChoice, setOpponentChoice] = useState(null)
+    const [playerScore, setPlayerScore] = useState(0)
+    const [opponentScore, setOpponentScore] = useState(0)
+    const [round, setRound] = useState(1)
+    const [winner, setWinner] = useState(null)
     const [numPlayersReady, setNumPlayersReady] = useState(0);
 
     useEffect(() => {
@@ -18,6 +22,31 @@ const multiGame = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (playerChoice && opponentChoice) {
+            const determineWinner = () => {
+                if (playerChoice && opponentChoice) {
+                    if (playerChoice === opponentChoice) {
+                        setWinner('Tie');
+                    } else if (
+                        (playerChoice === 'rock' && opponentChoice === 'scissors') ||
+                        (playerChoice === 'paper' && opponentChoice === 'rock') ||
+                        (playerChoice === 'scissors' && opponentChoice === 'paper')
+                    ) {
+                        setWinner('You win!');
+                        setPlayerScore((prevScore) => prevScore + 1);
+                        setRound((prevRound) => prevRound + 1);
+                    } else {
+                        setWinner('Opponent wins!');
+                        setOpponentScore((prevScore) => prevScore + 1);
+                        setRound((prevRound) => prevRound + 1);
+                    }
+                }
+            };
+
+            determineWinner();
+        }
+    }, [playerChoice, opponentChoice])
 
     const socketInitializer = async () => {
         await fetch('/api/socket')
@@ -64,19 +93,19 @@ const multiGame = () => {
                 <div className="border-2 border-black border-solid h-60 w-[80%] flex flex-col">
                     <div id="container">
                         <div className="flex justify-center mt-3">
-                            <h1 className="font-bold text-4xl">Round {}</h1>
+                            <h1 className="font-bold text-4xl">Round {round}</h1>
                         </div>
                         <div className="flex justify-between items-center w-[100%] mt-4">
                             <div className="ml-5">
                                 <p className="font-bold text-3xl">You</p>
                                 <div className="flex justify-center">
-                                    <p className="mt-3 font-bold text-green-600 text-5xl">{}</p>
+                                    <p className="mt-3 font-bold text-green-600 text-5xl">{playerScore}</p>
                                 </div>
                             </div>
                             <div className="mr-5">
                                 <p className="font-bold text-3xl">Opponent</p>
                                 <div className="flex justify-center">
-                                    <p className="mt-3 font-bold text-green-600 text-5xl">{}</p>
+                                    <p className="mt-3 font-bold text-green-600 text-5xl">{opponentScore}</p>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +132,7 @@ const multiGame = () => {
                 <div className="flex flex-col items-center mt-8">
                     <p className="text-2xl font-bold">You chose: {playerChoice}</p>
                     <p className="text-2xl font-bold">Opponent chose: {opponentChoice}</p>
-                    <p className="text-3xl font-bold mt-4">{}</p>
+                    <p className="text-3xl font-bold mt-4">{winner}</p>
                 </div>
             </div>
         </>
