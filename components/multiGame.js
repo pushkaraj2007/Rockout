@@ -11,6 +11,7 @@ const multiGame = () => {
     const [round, setRound] = useState(1)
     const [winner, setWinner] = useState(null)
     const [numPlayersReady, setNumPlayersReady] = useState(0);
+    const [disabled, setDisabled] = useState(false)
 
     useEffect(() => {
         socketInitializer();
@@ -84,6 +85,7 @@ const multiGame = () => {
         setPlayerChoice(choice);
         socket.emit("player-choice", choice, socket.id);
         setNumPlayersReady(numPlayersReady + 1);
+        setDisabled(true)
     };
 
     return (
@@ -119,13 +121,13 @@ const multiGame = () => {
             <div className="flex flex-col items-center justify-center mt-8">
                 <h1 className="text-3xl font-bold mb-8">Rock Paper Scissors</h1>
                 <div className="flex">
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" onClick={() => handleplayerChoice('rock')}>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" disabled={disabled} onClick={() => handleplayerChoice('rock')}>
                         Rock
                     </button>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" onClick={() => handleplayerChoice('paper')}>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" disabled={disabled} onClick={() => handleplayerChoice('paper')}>
                         Paper
                     </button>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" onClick={() => handleplayerChoice('scissors')}>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" disabled={disabled} onClick={() => handleplayerChoice('scissors')}>
                         Scissors
                     </button>
                 </div>
