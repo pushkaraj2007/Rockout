@@ -71,6 +71,19 @@ const multiGame = () => {
 
     }
 
+    useEffect(() => {
+        if (winner) {
+            setTimeout(() => {
+                setPlayerChoice(null);
+                setOpponentChoice(null);
+                setWinner(null);
+                setNumPlayersReady(0);
+                setDisabled(false);
+            }, 3000); // reset the game after 3 seconds
+        }
+    }, [winner]);
+
+
     // useEffect(()=>{
     //     if(opponentChoice !== null && winner !== null){
     //         // To reset the opponent and winner once player has selected choice
@@ -90,7 +103,6 @@ const multiGame = () => {
 
     return (
         <>
-
             <div className="flex justify-center mt-28">
                 <div className="border-2 border-black border-solid h-60 w-[80%] flex flex-col">
                     <div id="container">
