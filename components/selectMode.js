@@ -23,11 +23,20 @@ const SelectMode = () => {
           Play against real players across the world and fight for the win! <br />
           You can even invite your friends for the battle or play with a random player.
         </p>
-        <Link href="/multiplayer">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
-            Play Now {'->'}
-          </button>
-        </Link>
+
+        <div className='flex justify-around w-[100%]'>
+          <Link href="/create-room">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
+              Create a room
+            </button>
+          </Link>
+
+          <Link href="/join-room">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
+              Join a room
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
