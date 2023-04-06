@@ -13,6 +13,14 @@ const Game = () => {
   const [winner, setWinner] = useState(null);
   const [isClient, setIsClient] = useState(false)
 
+  useEffect(()=>{
+    document.onkeydown = (e)=>{
+      if(e.key == "1"){handleUserChoice('rock')}
+      if(e.key == "2"){handleUserChoice('paper')}
+      if(e.key == "3"){handleUserChoice('scissors')}
+    }
+  })
+
   useEffect(() => {
     if (round >= totalRounds) {
       let finalResultDiv = document.getElementById('finalResultDiv')
