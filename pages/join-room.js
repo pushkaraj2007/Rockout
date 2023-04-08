@@ -1,6 +1,41 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import io from 'socket.io-client'
+let socket;
 
 const joinRoom = () => {
+    const router = useRouter()
+
+    useEffect(() => {
+        socketInitializer();
+        return () => {
+            if (socket) {
+                socket.disconnect();
+                socket.destroy();
+            }
+        };
+    }, []);
+
+    // Initalize the socket
+    const socketInitializer = async () => {
+        await fetch('/api/socket')
+        socket = io('http://localhost:3000')
+
+        socket.on('connect', () => {
+            console.log('connected')
+            console.log(socket.id)
+        })
+    }
+
+    const startGameBtn = () => {
+        console.log('startGameBtn function called');
+        const roomId = document.getElementById('roomId-input').value
+        const playerName = document.getElementById('name-input').value
+        socket.emit('join-room', roomId, playerName, socket.id)
+        router.push(`/${roomId}?name=${playerName}`)
+    }
+
     return (
         <div id="input-div" className="flex flex-col items-center justify-center h-screen">
             <div id="input-container" className="flex flex-col items-center justify-center rounded-md shadow-lg p-10 bg-white">

@@ -3,26 +3,6 @@ import { Server } from 'socket.io'
 let playerChoices = {};
 let rooms = [];
 
-function generateRandomString(length) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-}
-
-function createRoomId() {
-  let roomId = generateRandomString(11)
-  while (rooms.includes(roomId)) {
-    roomId = generateRandomString(11)
-  }
-
-  rooms.push(roomId)
-
-  return roomId;
-}
-
 const SocketHandler = (req, res) => {
   if (res.socket.server.io) {
     console.log('Socket is already running')
@@ -45,16 +25,15 @@ const SocketHandler = (req, res) => {
         }
       })
 
-      socket.on('create-room', (rounds, playerName, id) => {
+      socket.on('create-room', (rounds, playerName, roomId) => {
         console.log('create-room event triggered with rounds:', rounds, 'playerName:', playerName, 'and id:', id);
-        let roomId = createRoomId();
-        io.emit('player-joined', roomId, rounds, playerName)
         socket.join(roomId)
         console.log(playerName)
       })
 
       socket.on('join-room', (roomId, playerName, id) => {
-        console.log(roomId)
+        socket.join(roomId)
+        io.to(roomId).emit('player-joined', roomId, playerName)
       })
 
     })
