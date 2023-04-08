@@ -33,7 +33,7 @@ const joinRoom = () => {
         const roomId = document.getElementById('roomId-input').value
         const playerName = document.getElementById('name-input').value
         socket.emit('join-room', roomId, playerName, socket.id)
-        router.push(`/${roomId}?name=${playerName}`)
+        router.push(`/${roomId}?name=${playerName}&action=join`)
     }
 
     return (

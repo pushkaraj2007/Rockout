@@ -37,7 +37,7 @@ const createRoom = () => {
         if (rounds >= 1 && playerName.replace(/\s/g, '').length >= 1) {
             let roomId = createRoomId(11)
             socket.emit('create-room', rounds, playerName, roomId)
-            router.push(`/${roomId}?rounds=${rounds}&name=${playerName}`)
+            router.push(`/${roomId}?rounds=${rounds}&name=${playerName}&action=create`)
         }
     }
 

@@ -1,7 +1,6 @@
 import { Server } from 'socket.io'
 
 let playerChoices = {};
-let rooms = [];
 
 const SocketHandler = (req, res) => {
   if (res.socket.server.io) {
@@ -25,9 +24,9 @@ const SocketHandler = (req, res) => {
         }
       })
 
-      socket.on('create-room', (rounds, playerName, roomId) => {
-        console.log('create-room event triggered with rounds:', rounds, 'playerName:', playerName, 'and id:', id);
-        socket.join(roomId)
+      socket.on('create-room', async (rounds, playerName, roomId) => {
+        await socket.join(roomId)
+        io.to(roomId).emit('room-created', rounds, roomId, playerName)
         console.log(playerName)
       })
 
