@@ -1,13 +1,10 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
-import {useRouter} from 'next/router'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import io from 'socket.io-client'
 let socket;
 
 const createRoom = () => {
-
-    const [playerName, setPlayerName] = useState(null)
-    const [totalRounds, setTotalRounds] = useState(null)
     const router = useRouter()
 
 
@@ -31,9 +28,8 @@ const createRoom = () => {
             console.log(socket.id)
         })
 
-        socket.on('player-joined', (name) =>{
-            console.log(name)
-            setPlayerName(name)
+        socket.on('player-joined', (roomId, rounds, playerName) =>{
+            router.push(`/${roomId}?rounds=${rounds}&name=${playerName}`)
         })
     }
 
@@ -41,18 +37,7 @@ const createRoom = () => {
         console.log('startGameBtn function called');
         const roundsInput = document.getElementById('rounds-input').value
         const nameInput = document.getElementById('name-input').value
-        const roomId = generateRandomString(11)
-        router.push(`/${roomId}?rounds=${roundsInput}&name=${nameInput}`)
         socket.emit('create-room', roundsInput, nameInput, socket.id)
-    }
-
-    function generateRandomString(length) {
-        let result = '';
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return result;
     }
 
     return (
@@ -70,7 +55,6 @@ const createRoom = () => {
 
                 <button id="start-game-btn" className="py-3 mt-2 px-6 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-lg transition-all duration-300 ease-in-out" onClick={() => startGameBtn()}>Start Game</button>
             </div>
-            <h1 className='text-8xl'>{playerName}</h1>
         </div>
     )
 }
