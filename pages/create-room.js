@@ -27,17 +27,27 @@ const createRoom = () => {
             console.log('connected')
             console.log(socket.id)
         })
-
-        socket.on('player-joined', (roomId, rounds, playerName) =>{
-            router.push(`/${roomId}?rounds=${rounds}&name=${playerName}`)
-        })
     }
 
     const startGameBtn = () => {
         console.log('startGameBtn function called');
-        const roundsInput = document.getElementById('rounds-input').value
-        const nameInput = document.getElementById('name-input').value
-        socket.emit('create-room', roundsInput, nameInput, socket.id)
+        const rounds = document.getElementById('rounds-input').value
+        const playerName = document.getElementById('name-input').value
+
+        if (rounds >= 1 && playerName.replace(/\s/g, '').length >= 1) {
+            let roomId = createRoomId(11)
+            socket.emit('create-room', rounds, playerName, roomId)
+            router.push(`/${roomId}?rounds=${rounds}&name=${playerName}`)
+        }
+    }
+
+    function createRoomId(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
     }
 
     return (
