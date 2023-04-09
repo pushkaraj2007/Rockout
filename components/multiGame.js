@@ -17,19 +17,19 @@ const multiGame = () => {
     const [totalRounds, setTotalRounds] = useState(1)
     const [playerName, setPlayerName] = useState(null)
     const [opponentName, setOpponentName] = useState(null)
-    const {rounds, name, action} = router.query
+    const { rounds, name, action, slug } = router.query
 
-    useEffect(()=>{
-        if(action == 'create'){
-            if(name && rounds){
+    useEffect(() => {
+        if (action == 'create') {
+            if (name && rounds) {
                 setPlayerName(name)
                 setTotalRounds(rounds)
             }
         }
-        else{
+        else {
             setPlayerName(name)
         }
-        }, [])
+    }, [])
 
     useEffect(() => {
         socketInitializer();
@@ -103,12 +103,16 @@ const multiGame = () => {
             console.log(choice2)
             if (id !== socket.id) {
                 setOpponentChoice(choice2);
-            }
-            else {
+            } else {
                 setOpponentChoice(choice1)
             }
-        })
+        });
 
+
+        socket.on('player-joined', (roomId, playerName) => {
+            console.log(`Player has been joined with roomId: ${roomId} and name: ${playerName}`)
+            setOpponentName(playerName)
+        })
     }
 
     // Reset the game after declaring round winner
@@ -130,6 +134,7 @@ const multiGame = () => {
         socket.emit("player-choice", choice, socket.id);
         setNumPlayersReady(numPlayersReady + 1);
         setDisabled(true)
+        socket.emit('message')
     };
 
 
@@ -149,7 +154,7 @@ const multiGame = () => {
                                 </div>
                             </div>
                             <div className="mr-5">
-                                <p className="font-bold text-3xl">Opponent</p>
+                                <p className="font-bold text-3xl">{opponentName}</p>
                                 <div className="flex justify-center">
                                     <p className="mt-3 font-bold text-green-600 text-5xl">{opponentScore}</p>
                                 </div>

@@ -1,6 +1,25 @@
 import { Server } from 'socket.io'
 
 let playerChoices = {};
+let rooms = {};
+
+function generateRandomId(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
+function createRoomId() {
+  let roomId = generateRandomId(11); // Generate a random roomId
+  while (roomId in rooms) { // Check if the roomId is already in the list
+    roomId = generateRandomId(11); // Generate a new random roomId if it already exists
+  }
+  rooms[roomId] = roomId; // Add the new roomId to the list
+  return roomId;
+}
 
 const SocketHandler = (req, res) => {
   if (res.socket.server.io) {
@@ -24,10 +43,25 @@ const SocketHandler = (req, res) => {
         }
       })
 
-      socket.on('create-room', async (rounds, playerName, roomId) => {
-        await socket.join(roomId)
-        io.to(roomId).emit('room-created', rounds, roomId, playerName)
-        console.log(playerName)
+      socket.on('create-room', ({ rounds, playerName }) => {
+
+        let roomId = createRoomId();
+
+        const room = {
+          roomId: roomId,
+          name: playerName,
+          rounds: rounds,
+          users: [],
+          currentPlayer: null,
+          currentRound: 1,
+          board: [],
+        };
+
+        rooms[roomId] = room;
+
+        socket.join(roomId)
+        io.to(roomId).emit('room-created', roomId, rounds, playerName)
+        console.log(`Room ${roomId} created`)
       })
 
       socket.on('join-room', (roomId, playerName, id) => {
@@ -35,6 +69,9 @@ const SocketHandler = (req, res) => {
         io.to(roomId).emit('player-joined', roomId, playerName)
       })
 
+      socket.on('message', () => {
+        console.log('message received')
+      })
     })
   }
   res.end()
