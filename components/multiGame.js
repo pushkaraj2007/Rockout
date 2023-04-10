@@ -20,18 +20,6 @@ const multiGame = () => {
     const { rounds, name, action, slug } = router.query
 
     useEffect(() => {
-        if (action == 'create') {
-            if (name && rounds) {
-                setPlayerName(name)
-                setTotalRounds(rounds)
-            }
-        }
-        else {
-            setPlayerName(name)
-        }
-    }, [])
-
-    useEffect(() => {
         socketInitializer();
         return () => {
             if (socket) {
@@ -52,13 +40,13 @@ const multiGame = () => {
                 if (playerScore > opponentScore) {
                     container.style.display = 'none'
                     finalResultDiv.style.display = 'flex'
-                    finalResulText.innerText = 'You Won!'
+                    finalResulText.innerText = `${playerName} Won!`,
                     finalResulText.style.color = 'green'
                 }
                 else {
                     container.style.display = 'none'
                     finalResultDiv.style.display = 'flex'
-                    finalResulText.innerText = 'Computer Won!'
+                    finalResulText.innerText = `${opponentName} Won!`,
                     finalResulText.style.color = 'red'
                 }
 
@@ -74,11 +62,11 @@ const multiGame = () => {
                         (playerChoice === 'paper' && opponentChoice === 'rock') ||
                         (playerChoice === 'scissors' && opponentChoice === 'paper')
                     ) {
-                        setWinner('You win!');
+                        setWinner(`${playerName} wins!`);
                         setPlayerScore((prevScore) => prevScore + 1);
                         setRound((prevRound) => prevRound + 1);
                     } else {
-                        setWinner('Opponent wins!');
+                        setWinner(`${opponentName} wins!`);
                         setOpponentScore((prevScore) => prevScore + 1);
                         setRound((prevRound) => prevRound + 1);
                     }
@@ -93,9 +81,12 @@ const multiGame = () => {
         await fetch('/api/socket')
         socket = io()
 
+        let isSocketInitialized = false;
+
         socket.on('connect', () => {
             console.log('connected')
             console.log(socket.id)
+            isSocketInitialized = true;
         })
 
         socket.on('update-choices', (choice1, choice2, id) => {
@@ -109,10 +100,35 @@ const multiGame = () => {
         });
 
 
-        socket.on('player-joined', (roomId, playerName) => {
-            console.log(`Player has been joined with roomId: ${roomId} and name: ${playerName}`)
-            setOpponentName(playerName)
+        socket.on('start-game', (playerName, ownerName, rounds, id) => {
+            if(id !== socket.id){
+                setOpponentName(playerName)
+            }
+            if(id == socket.id){
+                setOpponentName(ownerName)
+                setTotalRounds(rounds)
+            }
+            console.log('Startgame has been fired')
+            console.log(playerName + ' ' + id)
         })
+
+        const interval = setInterval(() => {
+            if (isSocketInitialized) {
+                clearInterval(interval);
+
+                if (action == 'create') {
+                    if (name && rounds) {
+                        setPlayerName(name)
+                        setTotalRounds(rounds)
+                        socket.emit('room-has-created', slug, name, rounds, socket.id)
+                    }
+                }
+                else {
+                    socket.emit('player-has-joined', slug, name, socket.id)
+                    setPlayerName(name)
+                }
+            }
+        }, 500);
     }
 
     // Reset the game after declaring round winner

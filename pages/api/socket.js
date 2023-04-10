@@ -7,7 +7,7 @@ function generateRandomId(length) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
 }
@@ -22,6 +22,7 @@ function createRoomId() {
 }
 
 const SocketHandler = (req, res) => {
+
   if (res.socket.server.io) {
     console.log('Socket is already running')
   } else {
@@ -62,11 +63,25 @@ const SocketHandler = (req, res) => {
         socket.join(roomId)
         io.to(roomId).emit('room-created', roomId, rounds, playerName)
         console.log(`Room ${roomId} created`)
+        console.log(rooms)
       })
 
       socket.on('join-room', (roomId, playerName, id) => {
         socket.join(roomId)
         io.to(roomId).emit('player-joined', roomId, playerName)
+      })
+
+      socket.on('player-has-joined', (roomId, playerName, id) => {
+        console.log(rooms)
+        console.log(`roomId on joining player is ${roomId}`)
+        let gameObj = rooms[roomId]
+        socket.join(roomId)
+        io.to(roomId).emit('start-game', playerName, gameObj.name, gameObj.rounds, id)
+        console.log('The ultimate player has been joined')
+      })
+
+      socket.on('room-has-created', (roomId, playerName, rounds, id) => {
+        socket.join(roomId)
       })
 
       socket.on('message', () => {
