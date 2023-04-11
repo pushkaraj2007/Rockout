@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { useRouter } from "next/router";
+import ShareButton from './shareButton'
 let socket;
 
 const multiGame = () => {
@@ -41,13 +42,13 @@ const multiGame = () => {
                     container.style.display = 'none'
                     finalResultDiv.style.display = 'flex'
                     finalResulText.innerText = `${playerName} Won!`,
-                    finalResulText.style.color = 'green'
+                        finalResulText.style.color = 'green'
                 }
                 else {
                     container.style.display = 'none'
                     finalResultDiv.style.display = 'flex'
                     finalResulText.innerText = `${opponentName} Won!`,
-                    finalResulText.style.color = 'red'
+                        finalResulText.style.color = 'red'
                 }
 
                 return;
@@ -101,10 +102,10 @@ const multiGame = () => {
 
 
         socket.on('start-game', (playerName, ownerName, rounds, id) => {
-            if(id !== socket.id){
+            if (id !== socket.id) {
                 setOpponentName(playerName)
             }
-            if(id == socket.id){
+            if (id == socket.id) {
                 setOpponentName(ownerName)
                 setTotalRounds(rounds)
             }
@@ -156,8 +157,9 @@ const multiGame = () => {
 
     return (
         <>
-            <div className="flex justify-center mt-28">
-                <div className="border-2 border-black border-solid h-60 w-[80%] flex flex-col">
+            <div className="flex flex-col justify-center items-center mt-28">
+                <ShareButton roomId={slug} />
+                <div className="border-2 border-black border-solid h-60 w-[80%] flex flex-col mt-5">
                     <div id="container">
                         <div className="flex justify-center mt-3">
                             <h1 className="font-bold text-4xl">Round {round}</h1>

@@ -6,6 +6,7 @@ let socket;
 
 const joinRoom = () => {
     const router = useRouter()
+    const { roomId } = router.query
 
     useEffect(() => {
         socketInitializer();
@@ -27,7 +28,7 @@ const joinRoom = () => {
             console.log(socket.id)
         })
 
-        socket.on('player-joined', (roomId, playerName)=>{
+        socket.on('player-joined', (roomId, playerName) => {
             router.push(`/${roomId}?name=${playerName}&id=${socket.id}&action=join`)
         })
     }
@@ -45,7 +46,7 @@ const joinRoom = () => {
                 <h1 className="text-3xl font-bold mb-4">Rock Paper Scissors</h1>
                 <div className="flex flex-col items-center justify-center mb-6">
                     <label htmlFor="roomId-input" className="text-lg font-semibold mb-2">Enter Room Id:</label>
-                    <input id="roomId-input" type="text" min="1" className="px-4 py-2 text-lg border-b border-gray-500 focus:outline-none focus:border-green-500 transition-colors duration-300" />
+                    <input id="roomId-input" type="text" min="1" value={roomId} className="px-4 py-2 text-lg border-b border-gray-500 focus:outline-none focus:border-green-500 transition-colors duration-300" />
                 </div>
                 <div className="flex flex-col items-center justify-center">
                     <label htmlFor="name-input" className="text-lg font-semibold mb-2">Enter your name:</label>
