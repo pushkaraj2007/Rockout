@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Swal from 'sweetalert2'
 
 const CHOICES = ['rock', 'paper', 'scissors'];
 
@@ -12,12 +11,15 @@ const Game = () => {
   const [totalRounds, setTotalRounds] = useState(5)
   const [winner, setWinner] = useState(null);
   const [isClient, setIsClient] = useState(false)
+  const [isGameSection, setIsGameSection] = useState(false)
 
-  useEffect(()=>{
-    document.onkeydown = (e)=>{
-      if(e.key == "1"){handleUserChoice('rock')}
-      if(e.key == "2"){handleUserChoice('paper')}
-      if(e.key == "3"){handleUserChoice('scissors')}
+  useEffect(() => {
+    if (isGameSection) {
+      document.onkeydown = (e) => {
+        if (e.key == "1") { handleUserChoice('rock') }
+        if (e.key == "2") { handleUserChoice('paper') }
+        if (e.key == "3") { handleUserChoice('scissors') }
+      }
     }
   })
 
@@ -110,13 +112,14 @@ const Game = () => {
 
       // Check if player has entered value or not
       if (roundsInput.value.replace(/\s/g, '') > 1) {
-        
+
         inputSection.id = 'input-section'
         setTotalRounds(roundsInput.value)
 
         inputSection.addEventListener('animationend', () => {
           gameSection.classList.remove('hidden')
           gameSection.classList.add('block')
+          setIsGameSection(true)
           inputSection.classList.add('hidden')
         })
       }
@@ -152,7 +155,7 @@ const Game = () => {
             </div>
 
             <div id='reset-btn' className='width-[100%] mb-6 justify-center items-center hidden'>
-              <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded" onClick={() => handleResetBtn()}>
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded" onClick={() => handleResetBtn()}>
                 Reset
               </button>
             </div>
@@ -161,7 +164,7 @@ const Game = () => {
 
         <div className="flex flex-col items-center justify-center mt-8">
           <h1 className="text-3xl font-bold">Rock Paper Scissors</h1>
-          <div className="flex">
+          <div className="flex mt-8">
             <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" onClick={() => handleUserChoice("rock")}>
               Rock
             </button>
