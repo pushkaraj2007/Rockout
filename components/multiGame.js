@@ -41,17 +41,19 @@ const multiGame = () => {
                 if (playerScore > opponentScore) {
                     container.style.display = 'none'
                     finalResultDiv.style.display = 'flex'
-                    finalResulText.innerText = `${playerName} Won!`,
-                        finalResulText.style.color = 'green'
+                    finalResulText.innerText = `${playerName} Won!`
+                    finalResulText.style.color = 'green'
+                    setDisabled(true)
+                    return;
                 }
                 else {
                     container.style.display = 'none'
                     finalResultDiv.style.display = 'flex'
-                    finalResulText.innerText = `${opponentName} Won!`,
-                        finalResulText.style.color = 'red'
+                    finalResulText.innerText = `${opponentName} Won!`
+                    finalResulText.style.color = 'red'
+                    setDisabled(true)
+                    return;
                 }
-
-                return;
             }
 
             const determineWinner = () => {
@@ -148,7 +150,7 @@ const multiGame = () => {
     const handleplayerChoice = (choice) => {
         console.log('called')
         setPlayerChoice(choice);
-        socket.emit("player-choice", choice, socket.id);
+        socket.emit("player-choice", choice, socket.id, slug);
         setNumPlayersReady(numPlayersReady + 1);
         setDisabled(true)
         socket.emit('message')
@@ -159,7 +161,7 @@ const multiGame = () => {
         <>
             <div className="flex flex-col justify-center items-center mt-28">
                 <ShareButton roomId={slug} />
-                <div className="border-2 border-black border-solid h-60 w-[80%] flex flex-col mt-5">
+                <div className="border-2 border-black dark:border-white border-solid h-60 w-[80%] flex flex-col mt-5">
                     <div id="container">
                         <div className="flex justify-center mt-3">
                             <h1 className="font-bold text-4xl">Round {round}</h1>
@@ -188,13 +190,13 @@ const multiGame = () => {
             <div className="flex flex-col items-center justify-center mt-8">
                 <h1 className="text-3xl font-bold mb-8">Rock Paper Scissors</h1>
                 <div className="flex">
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 hover:animate-pulse" disabled={disabled} onClick={() => handleplayerChoice('rock')}>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 hover:animate-pulse dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('rock')}>
                         Rock
                     </button>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" disabled={disabled} onClick={() => handleplayerChoice('paper')}>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('paper')}>
                         Paper
                     </button>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" disabled={disabled} onClick={() => handleplayerChoice('scissors')}>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('scissors')}>
                         Scissors
                     </button>
                 </div>

@@ -13,7 +13,7 @@ const SinglePlayer = () => {
         <link rel="stylesheet" href="/multiGame.css" />
       </Head>
       <main>
-        <div className='bg-white text-black'>
+        <div>
           <Game />
         </div>
       </main>

@@ -14,7 +14,7 @@ const SinglePlayer = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className='bg-white text-black'>
+        <div>
           <MultiGame />
         </div>
       </main>

@@ -31,7 +31,7 @@ const SocketHandler = (req, res) => {
     res.socket.server.io = io
 
     io.on('connection', (socket) => {
-      socket.on('player-choice', (choice, id) => {
+      socket.on('player-choice', (choice, id, roomId) => {
         playerChoices[id] = choice;
         const numPlayers = Object.keys(playerChoices).length;
         if (numPlayers === 2) {
@@ -39,7 +39,7 @@ const SocketHandler = (req, res) => {
           const player2 = Object.keys(playerChoices)[1];
           const choice1 = playerChoices[player1];
           const choice2 = playerChoices[player2];
-          io.to(player1).to(player2).emit('update-choices', choice1, choice2, id);
+          io.to(roomId).emit('update-choices', choice1, choice2, id);
           playerChoices = {};
         }
       })

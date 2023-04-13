@@ -130,7 +130,7 @@ const Game = () => {
     <>
       <div id="game-section" className="hidden">
         <div className="flex justify-center mt-28">
-          <div className="border-2 border-black border-solid h-60 w-[80%] flex flex-col">
+          <div className="border-2 border-black dark:border-white border-solid h-60 w-[80%] flex flex-col">
             <div id="container">
               <div className="flex justify-center mt-3">
                 <h1 className="font-bold text-4xl">Round {round}</h1>
@@ -165,13 +165,13 @@ const Game = () => {
         <div className="flex flex-col items-center justify-center mt-8">
           <h1 className="text-3xl font-bold">Rock Paper Scissors</h1>
           <div className="flex mt-8">
-            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" onClick={() => handleUserChoice("rock")}>
+            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" onClick={() => handleUserChoice("rock")}>
               Rock
             </button>
-            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" onClick={() => handleUserChoice("paper")}>
+            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" onClick={() => handleUserChoice("paper")}>
               Paper
             </button>
-            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4" onClick={() => handleUserChoice("scissors")}>
+            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" onClick={() => handleUserChoice("scissors")}>
               Scissors
             </button>
           </div>
