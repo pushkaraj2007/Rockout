@@ -30,8 +30,7 @@ const multiGame = () => {
         };
     }, []);
 
-    useEffect(() => {
-        if (playerChoice && opponentChoice) {
+    useEffect(()=>{
             // Check if rounds are completed
             if (round >= totalRounds) {
                 let finalResultDiv = document.getElementById('finalResultDiv')
@@ -55,7 +54,10 @@ const multiGame = () => {
                     return;
                 }
             }
+    },[playerScore, opponentScore])
 
+    useEffect(() => {
+        if (playerChoice && opponentChoice) {
             const determineWinner = () => {
                 if (playerChoice && opponentChoice) {
                     if (playerChoice === opponentChoice) {
