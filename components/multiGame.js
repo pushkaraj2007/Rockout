@@ -17,7 +17,7 @@ const multiGame = () => {
     const [disabled, setDisabled] = useState(false)
     const [totalRounds, setTotalRounds] = useState(1)
     const [playerName, setPlayerName] = useState(null)
-    const [opponentName, setOpponentName] = useState(null)
+    const [opponentName, setOpponentName] = useState("Rohan")
     const { rounds, name, action, slug } = router.query
 
     useEffect(() => {
