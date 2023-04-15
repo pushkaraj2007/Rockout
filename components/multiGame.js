@@ -13,7 +13,7 @@ const multiGame = () => {
     const [opponentChoice, setOpponentChoice] = useState(null)
     const [playerScore, setPlayerScore] = useState(0)
     const [opponentScore, setOpponentScore] = useState(0)
-    const [round, setRound] = useState(1)
+    const [currentRound, setCurrentRound] = useState(1)
     const [winner, setWinner] = useState(null)
     const [numPlayersReady, setNumPlayersReady] = useState(0);
     const [disabled, setDisabled] = useState(false)
@@ -35,7 +35,7 @@ const multiGame = () => {
 
     useEffect(() => {
         // Check if rounds are completed
-        if (round > totalRounds) {
+        if (currentRound > totalRounds) {
             let finalResultDiv = document.getElementById('finalResultDiv')
             let finalResulText = document.getElementById('finalResultText')
             let container = document.getElementById('container')
@@ -48,7 +48,7 @@ const multiGame = () => {
                 setDisabled(true)
                 return;
             }
-            else {
+            if (opponentScore > playerScore) {
                 container.style.display = 'none'
                 finalResultDiv.style.display = 'flex'
                 finalResulText.innerText = `${opponentName} Won!`
@@ -57,7 +57,7 @@ const multiGame = () => {
                 return;
             }
         }
-    }, [round])
+    }, [currentRound])
 
     useEffect(() => {
         if (playerChoice && opponentChoice) {
@@ -72,11 +72,11 @@ const multiGame = () => {
                     ) {
                         setWinner(`${playerName} wins!`);
                         setPlayerScore((prevScore) => prevScore + 1);
-                        setRound((prevRound) => prevRound + 1);
+                        setCurrentRound((prevRound) => prevRound + 1);
                     } else {
                         setWinner(`${opponentName} wins!`);
                         setOpponentScore((prevScore) => prevScore + 1);
-                        setRound((prevRound) => prevRound + 1);
+                        setCurrentRound((prevRound) => prevRound + 1);
                     }
                 }
             };
@@ -169,6 +169,11 @@ const multiGame = () => {
             return;
         }
 
+        if(currentRound > totalRounds){
+            setDisabled(true)
+            return;
+        }
+
         console.log('called')
         setPlayerChoice(choice);
         socket.emit("player-choice", choice, socket.id, slug);
@@ -197,7 +202,7 @@ const multiGame = () => {
                 <div className="border-2 border-black dark:border-white border-solid h-60 w-[80%] flex flex-col mt-5">
                     <div id="container">
                         <div className="flex justify-center mt-3">
-                            <h1 className="font-bold text-4xl">Round {round}</h1>
+                            <h1 className="font-bold text-4xl">Round {currentRound}</h1>
                         </div>
                         <div className="flex justify-between items-center w-[100%] mt-4">
                             <div className="ml-5">
