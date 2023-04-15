@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { useRouter } from "next/router";
 import ShareButton from './shareButton'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 let socket;
 
 const multiGame = () => {
@@ -15,9 +17,10 @@ const multiGame = () => {
     const [winner, setWinner] = useState(null)
     const [numPlayersReady, setNumPlayersReady] = useState(0);
     const [disabled, setDisabled] = useState(false)
-    const [totalRounds, setTotalRounds] = useState(1)
+    const [totalRounds, setTotalRounds] = useState(5)
     const [playerName, setPlayerName] = useState(null)
-    const [opponentName, setOpponentName] = useState("Rohan")
+    const [opponentName, setOpponentName] = useState(null)
+    const [isBothPlayers, setIsBothPlayers] = useState(false)
     const { rounds, name, action, slug } = router.query
 
     useEffect(() => {
@@ -30,31 +33,31 @@ const multiGame = () => {
         };
     }, []);
 
-    useEffect(()=>{
-            // Check if rounds are completed
-            if (round >= totalRounds) {
-                let finalResultDiv = document.getElementById('finalResultDiv')
-                let finalResulText = document.getElementById('finalResultText')
-                let container = document.getElementById('container')
+    useEffect(() => {
+        // Check if rounds are completed
+        if (round > totalRounds) {
+            let finalResultDiv = document.getElementById('finalResultDiv')
+            let finalResulText = document.getElementById('finalResultText')
+            let container = document.getElementById('container')
 
-                if (playerScore > opponentScore) {
-                    container.style.display = 'none'
-                    finalResultDiv.style.display = 'flex'
-                    finalResulText.innerText = `${playerName} Won!`
-                    finalResulText.style.color = 'green'
-                    setDisabled(true)
-                    return;
-                }
-                else {
-                    container.style.display = 'none'
-                    finalResultDiv.style.display = 'flex'
-                    finalResulText.innerText = `${opponentName} Won!`
-                    finalResulText.style.color = 'red'
-                    setDisabled(true)
-                    return;
-                }
+            if (playerScore > opponentScore) {
+                container.style.display = 'none'
+                finalResultDiv.style.display = 'flex'
+                finalResulText.innerText = `${playerName} Won!`
+                finalResulText.style.color = 'green'
+                setDisabled(true)
+                return;
             }
-    },[playerScore, opponentScore])
+            else {
+                container.style.display = 'none'
+                finalResultDiv.style.display = 'flex'
+                finalResulText.innerText = `${opponentName} Won!`
+                finalResulText.style.color = 'red'
+                setDisabled(true)
+                return;
+            }
+        }
+    }, [round])
 
     useEffect(() => {
         if (playerChoice && opponentChoice) {
@@ -113,6 +116,7 @@ const multiGame = () => {
                 setOpponentName(ownerName)
                 setTotalRounds(rounds)
             }
+            setIsBothPlayers(true);
             console.log('Startgame has been fired')
             console.log(playerName + ' ' + id)
         })
@@ -150,6 +154,21 @@ const multiGame = () => {
     }, [winner]);
 
     const handleplayerChoice = (choice) => {
+        if (!isBothPlayers) {
+            toast.error("Wait for another player to join", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+
+            return;
+        }
+
         console.log('called')
         setPlayerChoice(choice);
         socket.emit("player-choice", choice, socket.id, slug);
@@ -163,6 +182,18 @@ const multiGame = () => {
         <>
             <div className="flex flex-col justify-center items-center mt-28">
                 <ShareButton roomId={slug} />
+                <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
                 <div className="border-2 border-black dark:border-white border-solid h-60 w-[80%] flex flex-col mt-5">
                     <div id="container">
                         <div className="flex justify-center mt-3">
