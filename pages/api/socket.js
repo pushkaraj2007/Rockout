@@ -72,6 +72,11 @@ const SocketHandler = (req, res) => {
       })
 
       socket.on('player-has-joined', (roomId, playerName, id) => {
+        if(!rooms[roomId]){
+          socket.emit('room-not-found')
+          return;
+        }
+
         console.log(rooms)
         console.log(`roomId on joining player is ${roomId}`)
         let gameObj = rooms[roomId]
@@ -81,7 +86,13 @@ const SocketHandler = (req, res) => {
       })
 
       socket.on('room-has-created', (roomId, playerName, rounds, id) => {
+        if(!rooms[roomId]){
+          socket.emit('room-not-found')
+          return;
+        }
+
         socket.join(roomId)
+        socket.emit('room-found')
       })
 
       socket.on('message', () => {

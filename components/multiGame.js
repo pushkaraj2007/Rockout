@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import ShareButton from './shareButton'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ErrorPage from "next/error";
+import Image from "next/image";
 let socket;
 
 const multiGame = () => {
@@ -109,6 +111,12 @@ const multiGame = () => {
 
 
         socket.on('start-game', (playerName, ownerName, rounds, id) => {
+            let loadingBar = document.getElementById('loadingBar');
+            let outerMostDiv = document.getElementById('outerMostDiv');
+
+            loadingBar.classList.add('hidden')
+            outerMostDiv.classList.remove('hidden')
+            
             if (id !== socket.id) {
                 setOpponentName(playerName)
             }
@@ -119,6 +127,22 @@ const multiGame = () => {
             setIsBothPlayers(true);
             console.log('Startgame has been fired')
             console.log(playerName + ' ' + id)
+        })
+
+        socket.on('room-not-found', () => {
+            let loadingBar = document.getElementById('loadingBar')
+            let errorPage = document.getElementById('errorPage')
+
+            loadingBar.classList.add('hidden')
+            errorPage.classList.remove('hidden')
+        })
+
+        socket.on('room-found', ()=>{
+            let loadingBar = document.getElementById('loadingBar');
+            let outerMostDiv = document.getElementById('outerMostDiv');
+
+            loadingBar.classList.add('hidden')
+            outerMostDiv.classList.remove('hidden')
         })
 
         const interval = setInterval(() => {
@@ -169,7 +193,7 @@ const multiGame = () => {
             return;
         }
 
-        if(currentRound > totalRounds){
+        if (currentRound > totalRounds) {
             setDisabled(true)
             return;
         }
@@ -185,63 +209,73 @@ const multiGame = () => {
 
     return (
         <>
-            <div className="flex flex-col justify-center items-center mt-28">
-                <ShareButton roomId={slug} />
-                <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="dark"
-                />
-                <div className="border-2 border-black dark:border-white border-solid h-60 w-[80%] flex flex-col mt-5">
-                    <div id="container">
-                        <div className="flex justify-center mt-3">
-                            <h1 className="font-bold text-4xl">Round {currentRound}</h1>
-                        </div>
-                        <div className="flex justify-between items-center w-[100%] mt-4">
-                            <div className="ml-5">
-                                <p className="font-bold text-3xl">{playerName}</p>
-                                <div className="flex justify-center">
-                                    <p className="mt-3 font-bold text-green-600 text-5xl">{playerScore}</p>
-                                </div>
-                            </div>
-                            <div className="mr-5">
-                                <p className="font-bold text-3xl">{opponentName}</p>
-                                <div className="flex justify-center">
-                                    <p className="mt-3 font-bold text-green-600 text-5xl">{opponentScore}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="finalResultDiv" className="h-[100%] w-[100%] hidden justify-center items-center">
-                        <h1 id="finalResultText" className="text-4xl">Initial</h1>
-                    </div>
-                </div>
+            <div id="errorPage" className="hidden">
+                <ErrorPage statusCode={404} />
             </div>
 
-            <div className="flex flex-col items-center justify-center mt-8">
-                <h1 className="text-3xl font-bold mb-8">Rock Paper Scissors</h1>
-                <div className="flex">
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 hover:animate-pulse dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('rock')}>
-                        Rock
-                    </button>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('paper')}>
-                        Paper
-                    </button>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('scissors')}>
-                        Scissors
-                    </button>
+            <div id="loadingBar" className="h-[100vh] w-[100%] flex justify-center items-center">
+                <Image src={'/loading-load.gif'} height={200} width={200} />
+            </div>
+
+            <div id="outerMostDiv" className="hidden">
+                <div className="flex flex-col justify-center items-center mt-28">
+                    <ShareButton roomId={slug} />
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
+                    />
+                    <div className="border-2 border-black dark:border-white border-solid h-60 w-[80%] flex flex-col mt-5">
+                        <div id="container">
+                            <div className="flex justify-center mt-3">
+                                <h1 className="font-bold text-4xl">Round {currentRound}</h1>
+                            </div>
+                            <div className="flex justify-between items-center w-[100%] mt-4">
+                                <div className="ml-5">
+                                    <p className="font-bold text-3xl">{playerName}</p>
+                                    <div className="flex justify-center">
+                                        <p className="mt-3 font-bold text-green-600 text-5xl">{playerScore}</p>
+                                    </div>
+                                </div>
+                                <div className="mr-5">
+                                    <p className="font-bold text-3xl">{opponentName}</p>
+                                    <div className="flex justify-center">
+                                        <p className="mt-3 font-bold text-green-600 text-5xl">{opponentScore}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="finalResultDiv" className="h-[100%] w-[100%] hidden justify-center items-center">
+                            <h1 id="finalResultText" className="text-4xl">Initial</h1>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex flex-col items-center mt-8">
-                    <p className="text-2xl font-bold">You chose: {playerChoice}</p>
-                    <p className="text-2xl font-bold">Opponent chose: {opponentChoice}</p>
-                    <p className="text-3xl font-bold mt-4">{winner}</p>
+
+                <div className="flex flex-col items-center justify-center mt-8">
+                    <h1 className="text-3xl font-bold mb-8">Rock Paper Scissors</h1>
+                    <div className="flex">
+                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 hover:animate-pulse dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('rock')}>
+                            Rock
+                        </button>
+                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('paper')}>
+                            Paper
+                        </button>
+                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('scissors')}>
+                            Scissors
+                        </button>
+                    </div>
+                    <div className="flex flex-col items-center mt-8">
+                        <p className="text-2xl font-bold">You chose: {playerChoice}</p>
+                        <p className="text-2xl font-bold">Opponent chose: {opponentChoice}</p>
+                        <p className="text-3xl font-bold mt-4">{winner}</p>
+                    </div>
                 </div>
             </div>
         </>
