@@ -21,7 +21,7 @@ const multiGame = () => {
     const [disabled, setDisabled] = useState(false)
     const [totalRounds, setTotalRounds] = useState(5)
     const [playerName, setPlayerName] = useState(null)
-    const [opponentName, setOpponentName] = useState(null)
+    const [opponentName, setOpponentName] = useState("Waiting...")
     const [isBothPlayers, setIsBothPlayers] = useState(false)
     const { rounds, name, action, slug } = router.query
 

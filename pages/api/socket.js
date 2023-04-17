@@ -72,7 +72,7 @@ const SocketHandler = (req, res) => {
       })
 
       socket.on('player-has-joined', (roomId, playerName, id) => {
-        if(!rooms[roomId]){
+        if (!rooms[roomId]) {
           socket.emit('room-not-found')
           return;
         }
@@ -86,7 +86,7 @@ const SocketHandler = (req, res) => {
       })
 
       socket.on('room-has-created', (roomId, playerName, rounds, id) => {
-        if(!rooms[roomId]){
+        if (!rooms[roomId]) {
           socket.emit('room-not-found')
           return;
         }
