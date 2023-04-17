@@ -98,6 +98,18 @@ const SocketHandler = (req, res) => {
       socket.on('message', () => {
         console.log('message received')
       })
+
+      socket.on("disconnect", () => {
+        Object.entries(rooms).forEach(([roomId, room]) => {
+          const userIndex = room.users.indexOf(socket.id);
+          if (userIndex !== -1) {
+            room.users.splice(userIndex, 1);
+            delete rooms[roomId];
+          }
+        });
+      });
+
+
     })
   }
   res.end()
