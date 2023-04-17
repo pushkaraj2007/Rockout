@@ -210,7 +210,7 @@ const multiGame = () => {
     return (
         <>
             <div id="errorPage" className="hidden">
-                <ErrorPage statusCode={404} />
+                <ErrorPage title="This room does not exist anymore" statusCode={404} />
             </div>
 
             <div id="loadingBar" className="h-[100vh] w-[100%] flex justify-center items-center">
