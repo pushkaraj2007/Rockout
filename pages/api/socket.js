@@ -1,8 +1,12 @@
 import { Server } from 'socket.io'
 
+// An object to keep track of player choices
 let playerChoices = {};
+
+// An object to keep track of rooms
 let rooms = {};
 
+// Function to generate a random ID
 function generateRandomId(length) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -12,6 +16,7 @@ function generateRandomId(length) {
   return result;
 }
 
+// Function to create a unique roomId
 function createRoomId() {
   let roomId = generateRandomId(11); // Generate a random roomId
   while (roomId in rooms) { // Check if the roomId is already in the list
@@ -21,6 +26,7 @@ function createRoomId() {
   return roomId;
 }
 
+// Define a function to handle socket connections
 const SocketHandler = (req, res) => {
 
   if (res.socket.server.io) {
@@ -30,7 +36,10 @@ const SocketHandler = (req, res) => {
     const io = new Server(res.socket.server)
     res.socket.server.io = io
 
+    // Listen for socket connections
     io.on('connection', (socket) => {
+
+      // Listen for 'player-choice' event
       socket.on('player-choice', (choice, id, roomId) => {
         playerChoices[id] = choice;
         const numPlayers = Object.keys(playerChoices).length;
@@ -44,6 +53,7 @@ const SocketHandler = (req, res) => {
         }
       })
 
+      // Listen for 'create-room' event
       socket.on('create-room', ({ rounds, playerName }) => {
 
         let roomId = createRoomId();
@@ -66,11 +76,13 @@ const SocketHandler = (req, res) => {
         console.log(rooms)
       })
 
+      // Listen for 'join-room' event
       socket.on('join-room', (roomId, playerName, id) => {
         socket.join(roomId)
         io.to(roomId).emit('player-joined', roomId, playerName)
       })
 
+      // Listen for 'player-has-joined' event
       socket.on('player-has-joined', (roomId, playerName, id) => {
         if (!rooms[roomId]) {
           socket.emit('room-not-found')
@@ -85,6 +97,7 @@ const SocketHandler = (req, res) => {
         console.log('The ultimate player has been joined')
       })
 
+      // Listen for 'room-has-created' event
       socket.on('room-has-created', (roomId, playerName, rounds, id) => {
         if (!rooms[roomId]) {
           socket.emit('room-not-found')
@@ -95,16 +108,13 @@ const SocketHandler = (req, res) => {
         socket.emit('room-found')
       })
 
-      socket.on('message', () => {
-        console.log('message received')
-      })
-
+      // Listen for 'disconnect' event
       socket.on("disconnect", () => {
         Object.entries(rooms).forEach(([roomId, room]) => {
-          const userIndex = room.users.indexOf(socket.id);
+          const userIndex = room.users.indexOf(socket.id); // Find the index of the player
           if (userIndex !== -1) {
-            room.users.splice(userIndex, 1);
-            delete rooms[roomId];
+            room.users.splice(userIndex, 1); // Remove the user from the room
+            delete rooms[roomId]; // Delete the room if the player disconnects
           }
         });
       });
