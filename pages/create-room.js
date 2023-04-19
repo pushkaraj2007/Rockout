@@ -21,7 +21,7 @@ const createRoom = () => {
     // Initalize the socket
     const socketInitializer = async () => {
         await fetch('/api/socket')
-        socket = io('http://localhost:3000')
+        socket = io('https://rockout.vercel.app')
 
         // Check if socket is connected to server
         socket.on('connect', () => {

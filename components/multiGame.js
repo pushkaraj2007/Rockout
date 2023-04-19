@@ -94,7 +94,7 @@ const multiGame = () => {
     // Initialize socket connection
     const socketInitializer = async () => {
         await fetch('/api/socket')
-        socket = io()
+        socket = io('https://rockout.vercel.app')
 
         let isSocketInitialized = false;
 
