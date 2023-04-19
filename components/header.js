@@ -14,7 +14,7 @@ function Header() {
                 <a href="https://twitter.com/pushkaraj2007" className="text-gray-400 hover:text-white mr-4">
                     <Image height={30} width={30} src={'/twitter.png'} />
                 </a>
-                <a href="https://github.com/example" className="text-gray-400 hover:text-white">
+                <a href="https://github.com/pushkaraj2007/rockout" className="text-gray-400 hover:text-white">
                     <Image height={40} width={40} src={'/github.png'} />
                 </a>
             </div>
