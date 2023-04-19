@@ -21,7 +21,7 @@ const joinRoom = () => {
     // Initalize the socket
     const socketInitializer = async () => {
         await fetch('/api/socket')
-        socket = io('https://rockout.vercel.app')
+        socket = io()
 
         socket.on('connect', () => {
             console.log('connected')
