@@ -12,6 +12,7 @@ const ThemeToggle = () => {
     }
   }, [darkMode]);
 
+  // Toggle dark mode
   const handleToggle = () => {
     setDarkMode(!darkMode);
   };

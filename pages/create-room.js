@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import io from 'socket.io-client'
 let socket;
 
+// Create a room
 const createRoom = () => {
     const router = useRouter()
-
 
     useEffect(() => {
         socketInitializer();
@@ -23,16 +23,19 @@ const createRoom = () => {
         await fetch('/api/socket')
         socket = io('http://localhost:3000')
 
+        // Check if socket is connected to server
         socket.on('connect', () => {
             console.log('connected')
             console.log(socket.id)
         })
 
+        // listen for 'room-created' event
         socket.on('room-created', (roomId, rounds, playerName)=>{
             router.push(`/${roomId}?rounds=${rounds}&name=${playerName}&id=${socket.id}&action=create`)
         })
     }
 
+    // Start the game
     const startGameBtn = () => {
         console.log('startGameBtn function called');
         const rounds = document.getElementById('rounds-input').value

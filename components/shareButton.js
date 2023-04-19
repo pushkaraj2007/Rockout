@@ -6,6 +6,7 @@ const ShareButton = ({ roomId }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
+  // Close dropdown on outside click
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -18,6 +19,7 @@ const ShareButton = ({ roomId }) => {
     };
   }, [dropdownRef]);
 
+  // Open dropdown
   const handleClick = () => {
     setShowDropdown(!showDropdown);
   };

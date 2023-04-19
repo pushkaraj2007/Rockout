@@ -13,6 +13,7 @@ const Game = () => {
   const [isClient, setIsClient] = useState(false)
   const [isGameSection, setIsGameSection] = useState(false)
 
+  // Run after game section is loaded
   useEffect(() => {
     if (isGameSection) {
       document.onkeydown = (e) => {
@@ -23,6 +24,7 @@ const Game = () => {
     }
   })
 
+  // Run after user choice and computer choice are selected
   useEffect(() => {
     if (round >= totalRounds) {
       let finalResultDiv = document.getElementById('finalResultDiv')
@@ -50,6 +52,8 @@ const Game = () => {
       return;
     }
 
+
+    // Determine winner based on user and computer choice
     const determineWinner = () => {
       if (userChoice && computerChoice) {
         if (userChoice === computerChoice) {
@@ -73,12 +77,14 @@ const Game = () => {
     determineWinner();
   }, [userChoice, computerChoice]);
 
+  // Handle user choice
   const handleUserChoice = (choice) => {
     const computerChoice2 = CHOICES[Math.floor(Math.random() * CHOICES.length)];
     setUserChoice(choice);
     setComputerChoice(computerChoice2);
   };
 
+  // Handle reset
   const handleResetBtn = () => {
     let finalResultDiv = document.getElementById('finalResultDiv')
     let container = document.getElementById('container')

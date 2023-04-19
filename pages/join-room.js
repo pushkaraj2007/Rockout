@@ -33,6 +33,7 @@ const joinRoom = () => {
         })
     }
 
+    // Start the game
     const startGameBtn = () => {
         console.log('startGameBtn function called');
         const roomId = document.getElementById('roomId-input').value

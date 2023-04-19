@@ -25,6 +25,7 @@ const multiGame = () => {
     const [isBothPlayers, setIsBothPlayers] = useState(false)
     const { rounds, name, action, slug } = router.query
 
+    // Initialize socket connection
     useEffect(() => {
         socketInitializer();
         return () => {
@@ -63,6 +64,8 @@ const multiGame = () => {
 
     useEffect(() => {
         if (playerChoice && opponentChoice) {
+            
+            // Determine winner based on user and opponent choice
             const determineWinner = () => {
                 if (playerChoice && opponentChoice) {
                     if (playerChoice === opponentChoice) {
@@ -87,18 +90,22 @@ const multiGame = () => {
         }
     }, [playerChoice, opponentChoice])
 
+
+    // Initialize socket connection
     const socketInitializer = async () => {
         await fetch('/api/socket')
         socket = io()
 
         let isSocketInitialized = false;
 
+        // Check if socket is connected to server
         socket.on('connect', () => {
             console.log('connected')
             console.log(socket.id)
             isSocketInitialized = true;
         })
 
+        // Listen for update-choices event
         socket.on('update-choices', (choice1, choice2, id) => {
             console.log(choice1)
             console.log(choice2)
@@ -109,7 +116,7 @@ const multiGame = () => {
             }
         });
 
-
+        // Listen for start-game event
         socket.on('start-game', (playerName, ownerName, rounds, id) => {
             let loadingBar = document.getElementById('loadingBar');
             let outerMostDiv = document.getElementById('outerMostDiv');
@@ -129,6 +136,7 @@ const multiGame = () => {
             console.log(playerName + ' ' + id)
         })
 
+        // listen for room-not-found event
         socket.on('room-not-found', () => {
             let loadingBar = document.getElementById('loadingBar')
             let errorPage = document.getElementById('errorPage')
@@ -137,6 +145,7 @@ const multiGame = () => {
             errorPage.classList.remove('hidden')
         })
 
+        // listen for room-found event
         socket.on('room-found', ()=>{
             let loadingBar = document.getElementById('loadingBar');
             let outerMostDiv = document.getElementById('outerMostDiv');
@@ -146,6 +155,7 @@ const multiGame = () => {
         })
 
         const interval = setInterval(() => {
+            // Check if socket is initialized
             if (isSocketInitialized) {
                 clearInterval(interval);
 
@@ -177,6 +187,7 @@ const multiGame = () => {
         }
     }, [winner]);
 
+    // Handle player choice
     const handleplayerChoice = (choice) => {
         if (!isBothPlayers) {
             toast.error("Wait for another player to join", {
