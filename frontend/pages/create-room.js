@@ -1,39 +1,22 @@
 import React from 'react'
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import io from 'socket.io-client'
-let socket;
+let socket = io('https://rockout-backend.onrender.com/');
 
 // Create a room
 const createRoom = () => {
     const router = useRouter()
 
-    useEffect(() => {
-        socketInitializer();
-        return () => {
-            if (socket) {
-                socket.disconnect();
-                socket.destroy();
-            }
-        };
-    }, []);
+    // Check if socket is connected to server
+    socket.on('connect', () => {
+        console.log('connected')
+        console.log(socket.id)
+    })
 
-    // Initalize the socket
-    const socketInitializer = async () => {
-        await fetch('/api/socket')
-        socket = io('https://rockout.vercel.app')
-
-        // Check if socket is connected to server
-        socket.on('connect', () => {
-            console.log('connected')
-            console.log(socket.id)
-        })
-
-        // listen for 'room-created' event
-        socket.on('room-created', (roomId, rounds, playerName)=>{
-            router.push(`/${roomId}?rounds=${rounds}&name=${playerName}&id=${socket.id}&action=create`)
-        })
-    }
+    // listen for 'room-created' event
+    socket.on('room-created', (roomId, rounds, playerName) => {
+        router.push(`/${roomId}?rounds=${rounds}&name=${playerName}&id=${socket.id}&action=create`)
+    })
 
     // Start the game
     const startGameBtn = () => {
@@ -42,7 +25,7 @@ const createRoom = () => {
         const playerName = document.getElementById('name-input').value
 
         if (rounds >= 1 && playerName.replace(/\s/g, '').length >= 1) {
-            socket.emit('create-room', {rounds, playerName})
+            socket.emit('create-room', { rounds, playerName })
         }
     }
 

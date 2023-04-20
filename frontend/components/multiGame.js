@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorPage from "next/error";
 import Image from "next/image";
-let socket;
+let socket = io('https://rockout-backend.onrender.com/')
 
 const multiGame = () => {
     const router = useRouter()
@@ -24,17 +24,6 @@ const multiGame = () => {
     const [opponentName, setOpponentName] = useState("Waiting...")
     const [isBothPlayers, setIsBothPlayers] = useState(false)
     const { rounds, name, action, slug } = router.query
-
-    // Initialize socket connection
-    useEffect(() => {
-        socketInitializer();
-        return () => {
-            if (socket) {
-                socket.disconnect();
-                socket.destroy();
-            }
-        };
-    }, []);
 
     useEffect(() => {
         // Check if rounds are completed
@@ -64,7 +53,7 @@ const multiGame = () => {
 
     useEffect(() => {
         if (playerChoice && opponentChoice) {
-            
+
             // Determine winner based on user and opponent choice
             const determineWinner = () => {
                 if (playerChoice && opponentChoice) {
@@ -90,89 +79,80 @@ const multiGame = () => {
         }
     }, [playerChoice, opponentChoice])
 
+    // Check if socket is connected to server
+    socket.on('connect', () => {
+        console.log('connected')
+        console.log(socket.id)
+        isSocketInitialized = true;
+    })
 
-    // Initialize socket connection
-    const socketInitializer = async () => {
-        await fetch('/api/socket')
-        socket = io('https://rockout.vercel.app')
+    // Listen for update-choices event
+    socket.on('update-choices', (choice1, choice2, id) => {
+        console.log(choice1)
+        console.log(choice2)
+        if (id !== socket.id) {
+            setOpponentChoice(choice2);
+        } else {
+            setOpponentChoice(choice1)
+        }
+    });
 
-        let isSocketInitialized = false;
+    // Listen for start-game event
+    socket.on('start-game', (playerName, ownerName, rounds, id) => {
+        let loadingBar = document.getElementById('loadingBar');
+        let outerMostDiv = document.getElementById('outerMostDiv');
 
-        // Check if socket is connected to server
-        socket.on('connect', () => {
-            console.log('connected')
-            console.log(socket.id)
-            isSocketInitialized = true;
-        })
+        loadingBar.classList.add('hidden')
+        outerMostDiv.classList.remove('hidden')
 
-        // Listen for update-choices event
-        socket.on('update-choices', (choice1, choice2, id) => {
-            console.log(choice1)
-            console.log(choice2)
-            if (id !== socket.id) {
-                setOpponentChoice(choice2);
-            } else {
-                setOpponentChoice(choice1)
-            }
-        });
+        if (id !== socket.id) {
+            setOpponentName(playerName)
+        }
+        if (id == socket.id) {
+            setOpponentName(ownerName)
+            setTotalRounds(rounds)
+        }
+        setIsBothPlayers(true);
+        console.log('Startgame has been fired')
+        console.log(playerName + ' ' + id)
+    })
 
-        // Listen for start-game event
-        socket.on('start-game', (playerName, ownerName, rounds, id) => {
-            let loadingBar = document.getElementById('loadingBar');
-            let outerMostDiv = document.getElementById('outerMostDiv');
+    // listen for room-not-found event
+    socket.on('room-not-found', () => {
+        let loadingBar = document.getElementById('loadingBar')
+        let errorPage = document.getElementById('errorPage')
 
-            loadingBar.classList.add('hidden')
-            outerMostDiv.classList.remove('hidden')
-            
-            if (id !== socket.id) {
-                setOpponentName(playerName)
-            }
-            if (id == socket.id) {
-                setOpponentName(ownerName)
-                setTotalRounds(rounds)
-            }
-            setIsBothPlayers(true);
-            console.log('Startgame has been fired')
-            console.log(playerName + ' ' + id)
-        })
+        loadingBar.classList.add('hidden')
+        errorPage.classList.remove('hidden')
+    })
 
-        // listen for room-not-found event
-        socket.on('room-not-found', () => {
-            let loadingBar = document.getElementById('loadingBar')
-            let errorPage = document.getElementById('errorPage')
+    // listen for room-found event
+    socket.on('room-found', () => {
+        let loadingBar = document.getElementById('loadingBar');
+        let outerMostDiv = document.getElementById('outerMostDiv');
 
-            loadingBar.classList.add('hidden')
-            errorPage.classList.remove('hidden')
-        })
+        loadingBar.classList.add('hidden')
+        outerMostDiv.classList.remove('hidden')
+    })
 
-        // listen for room-found event
-        socket.on('room-found', ()=>{
-            let loadingBar = document.getElementById('loadingBar');
-            let outerMostDiv = document.getElementById('outerMostDiv');
+    const interval = setInterval(() => {
+        // Check if socket is initialized
+        if (socket) {
+            clearInterval(interval);
 
-            loadingBar.classList.add('hidden')
-            outerMostDiv.classList.remove('hidden')
-        })
-
-        const interval = setInterval(() => {
-            // Check if socket is initialized
-            if (isSocketInitialized) {
-                clearInterval(interval);
-
-                if (action == 'create') {
-                    if (name && rounds) {
-                        setPlayerName(name)
-                        setTotalRounds(rounds)
-                        socket.emit('room-has-created', slug, name, rounds, socket.id)
-                    }
-                }
-                else {
-                    socket.emit('player-has-joined', slug, name, socket.id)
+            if (action == 'create') {
+                if (name && rounds) {
                     setPlayerName(name)
+                    setTotalRounds(rounds)
+                    socket.emit('room-has-created', slug, name, rounds, socket.id)
                 }
             }
-        }, 500);
-    }
+            else {
+                socket.emit('player-has-joined', slug, name, socket.id)
+                setPlayerName(name)
+            }
+        }
+    }, 500);
 
     // Reset the game after declaring round winner
     useEffect(() => {

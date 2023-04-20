@@ -1,37 +1,20 @@
 import React from 'react'
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import io from 'socket.io-client'
-let socket;
+let socket = io('https://rockout-backend.onrender.com/')
 
 const joinRoom = () => {
     const router = useRouter()
     const { roomId } = router.query
 
-    useEffect(() => {
-        socketInitializer();
-        return () => {
-            if (socket) {
-                socket.disconnect();
-                socket.destroy();
-            }
-        };
-    }, []);
+    socket.on('connect', () => {
+        console.log('connected')
+        console.log(socket.id)
+    })
 
-    // Initalize the socket
-    const socketInitializer = async () => {
-        await fetch('/api/socket')
-        socket = io('https://rockout.vercel.app')
-
-        socket.on('connect', () => {
-            console.log('connected')
-            console.log(socket.id)
-        })
-
-        socket.on('player-joined', (roomId, playerName) => {
-            router.push(`/${roomId}?name=${playerName}&id=${socket.id}&action=join`)
-        })
-    }
+    socket.on('player-joined', (roomId, playerName) => {
+        router.push(`/${roomId}?name=${playerName}&id=${socket.id}&action=join`)
+    })
 
     // Start the game
     const startGameBtn = () => {
