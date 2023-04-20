@@ -13,7 +13,7 @@ const createRoom = () => {
         console.log(socket.id)
     })
 
-    // listen for 'room-created' event
+    // listen for 'room-created' event 
     socket.on('room-created', (roomId, rounds, playerName) => {
         router.push(`/${roomId}?rounds=${rounds}&name=${playerName}&id=${socket.id}&action=create`)
     })
