@@ -22,7 +22,7 @@ function createRoomId() {
   while (roomId in rooms) { // Check if the roomId is already in the list
     roomId = generateRandomId(11); // Generate a new random roomId if it already exists
   }
-  rooms[roomId] = roomId; // Add the new roomId to the list
+  rooms[roomId] = {}; // Add a new empty object to the list
   return roomId;
 }
 
@@ -31,10 +31,10 @@ const SocketHandler = (req, res) => {
 
   if (res.socket.server.io) {
     console.log('Socket is already running')
+    return res.end() // Return the response to the client and exit the function
   } else {
     console.log('Socket is initializing')
     const io = new Server(res.socket.server)
-    io.set('origins', '*:*');
     res.socket.server.io = io
 
     // Listen for socket connections
@@ -42,15 +42,19 @@ const SocketHandler = (req, res) => {
 
       // Listen for 'player-choice' event
       socket.on('player-choice', (choice, id, roomId) => {
-        playerChoices[id] = choice;
-        const numPlayers = Object.keys(playerChoices).length;
-        if (numPlayers === 2) {
-          const player1 = Object.keys(playerChoices)[0];
-          const player2 = Object.keys(playerChoices)[1];
-          const choice1 = playerChoices[player1];
-          const choice2 = playerChoices[player2];
+        if (!playerChoices[roomId]) {
+          playerChoices[roomId] = {};
+        }
+        playerChoices[roomId][id] = choice;
+
+        const roomPlayers = Object.keys(playerChoices[roomId]);
+        if (roomPlayers.length === 2) {
+          const player1 = roomPlayers[0];
+          const player2 = roomPlayers[1];
+          const choice1 = playerChoices[roomId][player1];
+          const choice2 = playerChoices[roomId][player2];
           io.to(roomId).emit('update-choices', choice1, choice2, id);
-          playerChoices = {};
+          delete playerChoices[roomId];
         }
       })
 
@@ -122,8 +126,8 @@ const SocketHandler = (req, res) => {
 
 
     })
+    return res.end() // Return the response to the client and exit the function
   }
-  res.end()
 }
 
 export default SocketHandler
