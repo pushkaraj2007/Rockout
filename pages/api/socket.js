@@ -36,6 +36,7 @@ const SocketHandler = (req, res) => {
     console.log('Socket is initializing')
     const io = new Server(res.socket.server)
     res.socket.server.io = io
+    io.set('origins', '*:*');
 
     // Listen for socket connections
     io.on('connection', (socket) => {
