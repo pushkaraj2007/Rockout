@@ -1,39 +1,34 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import io from 'socket.io-client'
-let socket;
+import { io } from 'socket.io-client';
 
+const socket = io('http://localhost'); // Connect to the socket.io server
 // Create a room
 const createRoom = () => {
     const router = useRouter()
 
-    useEffect(() => {
-        socketInitializer();
-        return () => {
-            if (socket) {
-                socket.disconnect();
-                socket.destroy();
-            }
-        };
-    }, []);
+    // useEffect(() => {
+    //     socketInitializer();
+    //     return () => {
+    //         if (socket) {
+    //             socket.disconnect();
+    //             socket.destroy();
+    //         }
+    //     };
+    // }, []);
 
-    // Initalize the socket
-    const socketInitializer = async () => {
-        await fetch('/api/socket')
-        socket = io()
+    // Check if socket is connected to server
+    socket.on('connect', () => {
+        console.log('connected')
+        console.log(socket.id)
+    })
 
-        // Check if socket is connected to server
-        socket.on('connect', () => {
-            console.log('connected')
-            console.log(socket.id)
-        })
+    // listen for 'room-created' event
+    socket.on('room-created', (roomId, rounds, playerName) => {
+        router.push(`/${roomId}?rounds=${rounds}&name=${playerName}&id=${socket.id}&action=create`)
+    })
 
-        // listen for 'room-created' event
-        socket.on('room-created', (roomId, rounds, playerName)=>{
-            router.push(`/${roomId}?rounds=${rounds}&name=${playerName}&id=${socket.id}&action=create`)
-        })
-    }
 
     // Start the game
     const startGameBtn = () => {
@@ -42,7 +37,7 @@ const createRoom = () => {
         const playerName = document.getElementById('name-input').value
 
         if (rounds >= 1 && playerName.replace(/\s/g, '').length >= 1) {
-            socket.emit('create-room', {rounds, playerName})
+            socket.emit('create-room', { rounds, playerName })
         }
     }
 
