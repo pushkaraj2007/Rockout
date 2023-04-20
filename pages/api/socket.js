@@ -28,11 +28,6 @@ function createRoomId() {
 
 // Define a function to handle socket connections
 const SocketHandler = (req, res) => {
-
-  if (res.socket.server.io) {
-    console.log('Socket is already running')
-    return res.end() // Return the response to the client and exit the function
-  } else {
     console.log('Socket is initializing')
     const io = new Server(res.socket.server)
     res.socket.server.io = io
@@ -127,7 +122,7 @@ const SocketHandler = (req, res) => {
 
     })
     return res.end() // Return the response to the client and exit the function
-  }
+
 }
 
 export default SocketHandler
