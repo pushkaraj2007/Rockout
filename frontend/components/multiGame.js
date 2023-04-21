@@ -83,7 +83,6 @@ const multiGame = () => {
     socket.on('connect', () => {
         console.log('connected')
         console.log(socket.id)
-        isSocketInitialized = true;
     })
 
     // Listen for update-choices event
