@@ -3,8 +3,9 @@
 Rockout is a rock-paper-scissor game built using Next.js, Tailwind CSS, and Socket.io. The game features both Single Player and Multiplayer modes, with smooth gameplay and user-friendly interface.
 
 ## Screenshots
-
-![Gameplay Screenshot](https://user-images.githubusercontent.com/56987730/138609352-7986b077-7da3-4653-86dd-d914e6bb8c6b.png)
+Home Page                  | Game Page
+:-------------------------:|:-------------------------:
+![Home Page](https://user-images.githubusercontent.com/84712013/233801642-2ad977a9-aa5e-4d4b-b8e6-9e49c361f2c7.png) | ![Game Page](https://user-images.githubusercontent.com/84712013/233801687-5669955e-4739-43de-bec9-8c31e41e181f.png)
 
 ## How to Play
 
