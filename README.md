@@ -9,10 +9,11 @@ Home Page                  | Game Page
 
 ## How to Play
 
-1. Clone the repository or download the zip file.
-2. Install the necessary dependencies using `npm install`.
-3. Run the game using `npm run dev`.
-4. Choose the Single Player or Multiplayer mode and play the game.
+1. Go to rockout.vercel.app
+2. Choose between singlePlayer and multiPlayer modes (Create a Room & Join a Room)
+3. If you select singlePlayer mode, enter the number of rounds you want to play
+4. If you select Create a Room, enter your name and the total number of rounds you want to play. If you select  Join a Room, enter the roomId and your name.
+5. Start playing the game and enjoy!
 
 ## Features
 
@@ -46,3 +47,10 @@ This project is licensed under the MIT License. See the [LICENSE](https://github
 
 - Thanks to Next.js, Tailwind CSS, and Socket.io for making this project possible.
 - Thanks to the open-source community for their support and contributions.
+
+
+<!-- Go to rockout.vercel.app
+Choose between singlePlayer and multiPlayer modes (Create a Room & Join a Room)
+If you select singlePlayer mode, enter the number of rounds you want to play
+If you select Create a Room, enter your name and the total number of rounds you want to play. If you select Join a Room, enter the roomId and your name.
+Start playing the game and enjoy! -->
