@@ -47,10 +47,3 @@ This project is licensed under the MIT License. See the [LICENSE](https://github
 
 - Thanks to Next.js, Tailwind CSS, and Socket.io for making this project possible.
 - Thanks to the open-source community for their support and contributions.
-
-
-<!-- Go to rockout.vercel.app
-Choose between singlePlayer and multiPlayer modes (Create a Room & Join a Room)
-If you select singlePlayer mode, enter the number of rounds you want to play
-If you select Create a Room, enter your name and the total number of rounds you want to play. If you select Join a Room, enter the roomId and your name.
-Start playing the game and enjoy! -->
