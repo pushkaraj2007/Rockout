@@ -24,7 +24,7 @@ const ShareButton = ({ roomId }) => {
     setShowDropdown(!showDropdown);
   };
 
-  const shareUrl = `http://localhost:3000/join-room/?roomId=${roomId}`;
+  const shareUrl = `https://rockout.vercel.app/join-room/?roomId=${roomId}`;
   const shareTitle = `Join my room: ${roomId}`;
 
   return (
