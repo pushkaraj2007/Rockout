@@ -21,7 +21,7 @@ Rockout is a rock-paper-scissor game built using Next.js, Tailwind CSS, and Sock
 2. Choose between singlePlayer and multiPlayer modes (Create a Room & Join a Room)
 3. If you select singlePlayer mode, enter the number of rounds you want to play
 4. If you select Create a Room, enter your name and the total number of rounds you want to play. If you select Join a Room, enter the roomId and your name.
-   5 .Start playing the game and enjoy!
+5 .Start playing the game and enjoy!
 
 ## Features
 
