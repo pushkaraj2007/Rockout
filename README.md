@@ -8,14 +8,7 @@ Rockout is a rock-paper-scissor game built using Next.js, Tailwind CSS, and Sock
 | :-----------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: |
 | ![Home Page](https://user-images.githubusercontent.com/84712013/233801642-2ad977a9-aa5e-4d4b-b8e6-9e49c361f2c7.png) | ![Game Page](https://user-images.githubusercontent.com/84712013/233801687-5669955e-4739-43de-bec9-8c31e41e181f.png) |
 
-## How to Play(For Developers)
-
-1. Clone the repository or download the zip file.
-2. Install the necessary dependencies using `npm install`.
-3. Run the game using `npm run dev`.
-4. Choose the Single Player or Multiplayer mode and play the game.
-
-## How to Play(For End Users)
+## How to Play
 
 1. Go to rockout.vercel.app [Click Here](https://rockout.vercel.app/)
 2. Choose between singlePlayer and multiPlayer modes (Create a Room & Join a Room).
