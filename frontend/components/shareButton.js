@@ -1,6 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
-import { FaShareAlt, FaFacebook, FaTwitter, FaLinkedin } from 'react-icons/fa';
-import { IoLogoWhatsapp } from 'react-icons/io'
+import { useState, useRef, useEffect } from "react";
+import {
+  FaShareAlt,
+  FaFacebook,
+  FaTwitter,
+  FaLinkedin,
+  FaClipboard,
+} from "react-icons/fa";
+import { IoLogoWhatsapp } from "react-icons/io";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const ShareButton = ({ roomId }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -13,9 +20,9 @@ const ShareButton = ({ roomId }) => {
         setShowDropdown(false);
       }
     };
-    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener("mousedown", handleOutsideClick);
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [dropdownRef]);
 
@@ -26,6 +33,14 @@ const ShareButton = ({ roomId }) => {
 
   const shareUrl = `https://rockout.vercel.app/join-room/?roomId=${roomId}`;
   const shareTitle = `Join my room: ${roomId}`;
+  const [copyLink, setCopyLink] = useState(shareUrl);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const copyLinkTimeout = () => {
+    setTimeout(() => {
+      setLinkCopied(false);
+    }, 3000);
+  };
 
   return (
     <div className="relative inline-block text-left w-36">
@@ -90,6 +105,24 @@ const ShareButton = ({ roomId }) => {
             >
               <FaLinkedin className="inline-block mr-2" />
               LinkedIn
+            </a>
+            <a
+              onClick={copyLinkTimeout}
+              rel="noopener noreferrer"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              role="menuitem"
+            >
+              <FaClipboard className="inline-block mr-2" />
+              <CopyToClipboard
+                text={copyLink}
+                onCopy={() => setLinkCopied(true)}
+              >
+                {linkCopied ? (
+                  <button>Copied</button>
+                ) : (
+                  <button>Copy to clipboard</button>
+                )}
+              </CopyToClipboard>
             </a>
           </div>
         </div>
