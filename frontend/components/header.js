@@ -3,9 +3,10 @@ import Image from 'next/image'
 import Link from "next/link";
 import ToggleButton from './toggleButton'
 
+
 function Header() {
     return (
-        <header className="bg-gray-900 text-white h-20 absolute top-0 w-[100%] flex justify-between items-center">
+        <header className="text-white h-20 absolute top-0 w-[100%] flex justify-between items-center bg-gray-900 dark:bg-gradient-to-br dark:from-black-800 dark:to-gray">
             <Link className="ml-4" href={'/'}>
                 <p className="text-2xl font-bold">Rockout</p>
             </Link>
