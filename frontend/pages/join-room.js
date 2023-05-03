@@ -25,8 +25,8 @@ const joinRoom = () => {
     }
 
     return (
-        <div id="input-div" className="flex flex-col items-center justify-center h-screen">
-            <div id="input-container" className="flex flex-col items-center justify-center rounded-md shadow-lg p-10 dark:shadow-red-600">
+        <div id="input-div" className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-yellow-400 to-red-500 dark:bg-gradient-to-br dark:from-gray-800 dark:to-black">
+            <div id="input-container" className="flex flex-col items-center justify-center rounded-md shadow-lg p-10 bg-white text-black dark:text-white dark:shadow-red-600 dark:bg-gradient-to-br dark:from-gray-800 dark:to-black">
                 <h1 className="text-3xl font-bold mb-4">Rock Paper Scissors</h1>
                 <div className="flex flex-col items-center justify-center mb-6">
                     <label htmlFor="roomId-input" className="text-lg font-semibold mb-2">Enter Room Id:</label>

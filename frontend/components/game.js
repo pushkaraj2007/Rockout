@@ -139,17 +139,17 @@ const Game = () => {
           <div className="border-2 border-black dark:border-white border-solid h-60 w-[80%] flex flex-col">
             <div id="container">
               <div className="flex justify-center mt-3">
-                <h1 className="font-bold text-4xl">Round {round}</h1>
+                <h1 className="font-bold text-4xl text-black dark:text-white">Round {round}</h1>
               </div>
               <div className="flex justify-between items-center w-[100%] mt-4">
                 <div className="ml-5">
-                  <p className="font-bold text-3xl">You</p>
+                  <p className="font-bold text-3xl text-black dark:text-white">You</p>
                   <div className="flex justify-center">
                     <p className="mt-3 font-bold text-green-600 text-5xl">{userScore}</p>
                   </div>
                 </div>
                 <div className="mr-5">
-                  <p className="font-bold text-3xl">Computer</p>
+                  <p className="font-bold text-3xl text-black dark:text-white">Computer</p>
                   <div className="flex justify-center">
                     <p className="mt-3 font-bold text-green-600 text-5xl">{computerScore}</p>
                   </div>
@@ -169,28 +169,28 @@ const Game = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center mt-8">
-          <h1 className="text-3xl font-bold">Rock Paper Scissors</h1>
+          <h1 className="text-3xl font-bold text-black dark:text-white">Rock Paper Scissors</h1>
           <div className="flex mt-8">
-            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" onClick={() => handleUserChoice("rock")}>
+            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 text-black" onClick={() => handleUserChoice("rock")}>
               Rock
             </button>
-            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" onClick={() => handleUserChoice("paper")}>
+            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 text-black" onClick={() => handleUserChoice("paper")}>
               Paper
             </button>
-            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" onClick={() => handleUserChoice("scissors")}>
+            <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 text-black" onClick={() => handleUserChoice("scissors")}>
               Scissors
             </button>
           </div>
-          <div className="flex flex-col items-center mt-8">
-            <p className="text-2xl font-bold">You chose: {userChoice}</p>
+          <div className="flex flex-col items-center mt-8 text-black dark:text-white">
+            <p className="text-2xl font-bold ">You chose: {userChoice}</p>
             <p className="text-2xl font-bold">Computer chose: {computerChoice}</p>
             <p className="text-3xl font-bold mt-4">{winner}</p>
           </div>
         </div>
       </div>
 
-      <div id="input-div" className="flex flex-col items-center justify-center h-screen">
-        <div id="input-container" className="flex flex-col items-center justify-center rounded-md shadow-lg p-10 bg-white dark:bg-black dark:text-white dark:shadow-blue-600">
+      <div id="input-div" className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-yellow-400 to-red-500 dark:bg-gradient-to-br dark:from-gray-800 dark:to-black">
+        <div id="input-container" className="flex flex-col items-center justify-center rounded-md shadow-lg text-black p-10 bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-black dark:text-white dark:shadow-blue-600">
           <h1 className="text-3xl font-bold mb-4">Rock Paper Scissors</h1>
           <div className="flex flex-col items-center justify-center mb-6">
             <label htmlFor="rounds-input" className="text-lg font-semibold mb-2">Enter total rounds:</label>
