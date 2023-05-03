@@ -225,19 +225,19 @@ const multiGame = () => {
                     <div className="border-2 border-black dark:border-white border-solid h-60 w-[80%] flex flex-col mt-5">
                         <div id="container">
                             <div className="flex justify-center mt-3">
-                                <h1 className="font-bold text-4xl">Round {currentRound}</h1>
+                                <h1 className="font-bold text-4xl text-black dark:text-white">Round {currentRound}</h1>
                             </div>
                             <div className="flex justify-between items-center w-[100%] mt-4">
                                 <div className="ml-5">
-                                    <p className="font-bold text-3xl">{playerName}</p>
+                                    <p className="font-bold text-3xl text-black dark:text-white">{playerName}</p>
                                     <div className="flex justify-center">
-                                        <p className="mt-3 font-bold text-green-600 text-5xl">{playerScore}</p>
+                                        <p className="mt-3 font-bold text-green-600 text-5xl text-black dark:text-white">{playerScore}</p>
                                     </div>
                                 </div>
                                 <div className="mr-5">
-                                    <p className="font-bold text-3xl">{opponentName}</p>
+                                    <p className="font-bold text-3xl text-black dark:text-white">{opponentName}</p>
                                     <div className="flex justify-center">
-                                        <p className="mt-3 font-bold text-green-600 text-5xl">{opponentScore}</p>
+                                        <p className="mt-3 font-bold text-green-600 text-5xl text-black dark:text-white">{opponentScore}</p>
                                     </div>
                                 </div>
                             </div>
@@ -249,20 +249,20 @@ const multiGame = () => {
                 </div>
 
                 <div className="flex flex-col items-center justify-center mt-8">
-                    <h1 className="text-3xl font-bold mb-8">Rock Paper Scissors</h1>
+                    <h1 className="text-3xl font-bold mb-8 text-black dark:text-white">Rock Paper Scissors</h1>
                     <div className="flex">
-                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 hover:animate-pulse dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('rock')}>
+                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 hover:animate-pulse text-black" disabled={disabled} onClick={() => handleplayerChoice('rock')}>
                             Rock
                         </button>
-                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('paper')}>
+                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 text-black" disabled={disabled} onClick={() => handleplayerChoice('paper')}>
                             Paper
                         </button>
-                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 dark:text-black" disabled={disabled} onClick={() => handleplayerChoice('scissors')}>
+                        <button className="bg-gray-200 hover:bg-gray-300 text-xl font-bold py-4 px-8 rounded-md mr-4 text-black" disabled={disabled} onClick={() => handleplayerChoice('scissors')}>
                             Scissors
                         </button>
                     </div>
-                    <div className="flex flex-col items-center mt-8">
-                        <p className="text-2xl font-bold">You chose: {playerChoice}</p>
+                    <div className="flex flex-col items-center mt-8 text-black dark:text-white">
+                        <p className="text-2xl font-bold ">You chose: {playerChoice}</p>
                         <p className="text-2xl font-bold">Opponent chose: {opponentChoice}</p>
                         <p className="text-3xl font-bold mt-4">{winner}</p>
                     </div>
