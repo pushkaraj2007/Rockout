@@ -6,7 +6,7 @@ import ToggleButton from './toggleButton'
 
 function Header() {
     return (
-        <header className="text-white h-20 absolute top-0 w-[100%] flex justify-between items-center bg-gray-900 dark:bg-gradient-to-br dark:from-black-800 dark:to-gray">
+        <header className="text-white h-20 absolute top-0 w-[100%] flex justify-between items-center bg-gray-900 dark:bg-purple-900 dark:bg-gradient-to-br dark:from-black dark:to-gray">
             <Link className="ml-4" href={'/'}>
                 <p className="text-2xl font-bold">Rockout</p>
             </Link>
